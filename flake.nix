@@ -1,38 +1,51 @@
 {
-  description = "Maulana Sodiqin DevShell";
-
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    devenv.url = "github:cachix/devenv/latest";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    devenv.url = "github:cachix/devenv";
   };
 
-  outputs = {self, nixpkgs, devenv, ...}@inputs:
+  outputs = inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.devenv.flakeModule
+      ];
+      systems = [ "x86_64-linux" "aarch64-darwin" ];
 
-  let
-    pkgs = import nixpkgs {
-      system = "x86_64-linux";
-    };
-  in
+      perSystem = { config, self', inputs', pkgs, system, ... }: {
+        packages.default = pkgs.hello;
 
-  {
-    devShell.x86_64-linux = devenv.lib.mkShell {
-      inherit inputs pkgs;
-      modules = [
-        ({ pkgs, ... }: {
-          packages =  [ 
-            pkgs.nodejs
-            pkgs.nodePackages.yarn
-            pkgs.nodePackages.prettier
+        devenv.shells.default = {
+          packages = [ config.packages.default ];
+          enterShell = ''
+            hello
+            echo "Welcome to Maulana Sodiqin Shell!"
+          '';
+        };
+
+        devenv.shells.NodeJS = {
+          packages = with pkgs; [ 
+            nodejs 
+            nodePackages.yarn
+            nodePackages.prettier
           ];
 
           enterShell = ''
-          echo "Welcome to NodeJS Shell!"
-          zsh
+            node -v
           '';
-        })
-      ];
+        };
+
+        devenv.shells.Python = {
+          packages = with pkgs; [ 
+            python310
+            python310Packages.pip
+            python310Packages.virtualenv
+          ];
+
+          enterShell = ''
+            python --version
+          '';
+        };
+        
+      };
     };
-
-  };
-
 }
