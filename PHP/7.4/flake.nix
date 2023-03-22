@@ -39,7 +39,7 @@
       devShells.default = pkgs.mkShell {
         nativeBuildInputs = [ pkgs.bashInteractive ];
         buildInputs = with phps.packages.${sys}; [
-          env-php81
+          env-php74
         ];
         shellHook = with pkgs; ''
           echo "Anda menggunakan PHP versi $(php --version)"
