@@ -1,15 +1,14 @@
 {
-  description = "Simple DEV Shell";
+  description = "Android Dev Shell";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    phps.url = "github:loophp/nix-shell";
     android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, phps, android-nixpkgs, ... }:
+  outputs = { self, nixpkgs, flake-utils, android-nixpkgs, ... }:
     flake-utils.lib.eachDefaultSystem (
       system:
     let
@@ -195,7 +194,7 @@
 
     {
 
-      devShells.Android = pkgs.mkShell {
+      devShells.default = pkgs.mkShell {
         nativeBuildInputs = [ pkgs.bashInteractive ];
         buildInputs = with pkgs; [
           nodejs
@@ -239,216 +238,6 @@
           mkdir $HOME/.cache/flutter/
           fi
           ln -f -s ${pkgs.flutter}/bin/cache/dart-sdk $HOME/.cache/flutter/
-        '';
-      };
-
-      devShells.C = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive];
-        buildInputs = with pkgs; [
-          at-spi2-core.dev
-          clang
-          cmake
-          dbus.dev
-          gtk3
-          libdatrie
-          libepoxy.dev
-          util-linux.dev
-          libselinux
-          libsepol
-          libthai
-          libxkbcommon
-          ninja
-          pcre
-          pcre2.dev
-          pkg-config
-          xorg.libXdmcp
-          xorg.libXtst
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan C Compiler versi $(clang --version)"
-        '';
-      };
-      
-      devShells.Java = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive];
-        buildInputs = with pkgs; [
-          jdk
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan Java versi $(java --version)"
-        '';
-      };
-
-      devShells.NodeJS14 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with pkgs; [
-          nodejs-14_x
-          nodePackages.yarn
-          nodePackages.prettier
-          nodePackages.typescript
-          nodePackages.prisma
-          openssl
-        ];
-        shellHook = with pkgs; ''
-          export PRISMA_MIGRATION_ENGINE_BINARY="${prisma-engines}/bin/migration-engine"
-          export PRISMA_QUERY_ENGINE_BINARY="${prisma-engines}/bin/query-engine"
-          export PRISMA_QUERY_ENGINE_LIBRARY="${prisma-engines}/lib/libquery_engine.node"
-          export PRISMA_INTROSPECTION_ENGINE_BINARY="${prisma-engines}/bin/introspection-engine"
-          export PRISMA_FMT_BINARY="${prisma-engines}/bin/prisma-fmt"
-          export PATH=~/.npm-packages/bin:$PATH
-          export NODE_PATH=~/.npm-packages/lib/node_modules
-          echo "Anda menggunakan NodeJS versi $(node -v)"
-        '';
-      };
-
-      devShells.NodeJS16 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with pkgs; [
-          nodejs-16_x
-          nodePackages.yarn
-          nodePackages.prettier
-          nodePackages.typescript
-          nodePackages.prisma
-          openssl
-        ];
-        shellHook = with pkgs; ''
-          export PRISMA_MIGRATION_ENGINE_BINARY="${prisma-engines}/bin/migration-engine"
-          export PRISMA_QUERY_ENGINE_BINARY="${prisma-engines}/bin/query-engine"
-          export PRISMA_QUERY_ENGINE_LIBRARY="${prisma-engines}/lib/libquery_engine.node"
-          export PRISMA_INTROSPECTION_ENGINE_BINARY="${prisma-engines}/bin/introspection-engine"
-          export PRISMA_FMT_BINARY="${prisma-engines}/bin/prisma-fmt"
-          export PATH=~/.npm-packages/bin:$PATH
-          export NODE_PATH=~/.npm-packages/lib/node_modules
-          echo "Anda menggunakan NodeJS versi $(node -v)"
-        '';
-      };
-
-      devShells.NodeJS18 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with pkgs; [
-          nodejs
-          nodePackages.yarn
-          nodePackages.prettier
-          nodePackages.typescript
-          nodePackages.prisma
-          openssl
-        ];
-        shellHook = with pkgs; ''
-          export PRISMA_MIGRATION_ENGINE_BINARY="${prisma-engines}/bin/migration-engine"
-          export PRISMA_QUERY_ENGINE_BINARY="${prisma-engines}/bin/query-engine"
-          export PRISMA_QUERY_ENGINE_LIBRARY="${prisma-engines}/lib/libquery_engine.node"
-          export PRISMA_INTROSPECTION_ENGINE_BINARY="${prisma-engines}/bin/introspection-engine"
-          export PRISMA_FMT_BINARY="${prisma-engines}/bin/prisma-fmt"
-          export PATH=~/.npm-packages/bin:$PATH
-          export NODE_PATH=~/.npm-packages/lib/node_modules
-          echo "Anda menggunakan NodeJS versi $(node -v)"
-        '';
-      };
-
-      devShells.NodeJS19 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with pkgs; [
-          nodejs-19_x
-          nodePackages.yarn
-          nodePackages.prettier
-          nodePackages.typescript
-          nodePackages.prisma
-          openssl
-        ];
-        shellHook = with pkgs; ''
-          export PRISMA_MIGRATION_ENGINE_BINARY="${prisma-engines}/bin/migration-engine"
-          export PRISMA_QUERY_ENGINE_BINARY="${prisma-engines}/bin/query-engine"
-          export PRISMA_QUERY_ENGINE_LIBRARY="${prisma-engines}/lib/libquery_engine.node"
-          export PRISMA_INTROSPECTION_ENGINE_BINARY="${prisma-engines}/bin/introspection-engine"
-          export PRISMA_FMT_BINARY="${prisma-engines}/bin/prisma-fmt"
-          export PATH=~/.npm-packages/bin:$PATH
-          export NODE_PATH=~/.npm-packages/lib/node_modules
-          echo "Anda menggunakan NodeJS versi $(node -v)"
-        '';
-      };
-
-      devShells.Python38 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with pkgs; [
-          python38
-          python38Packages.pip
-          python38Packages.virtualenv
-          poetry
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan Python versi $(python --version)"
-        '';
-      };
-
-      devShells.Python39 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with pkgs; [
-          python39
-          python39Packages.pip
-          python39Packages.virtualenv
-          poetry
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan Python versi $(python --version)"
-        '';
-      };
-
-      devShells.Python310 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with pkgs; [
-          python310
-          python310Packages.pip
-          python310Packages.virtualenv
-          poetry
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan Python versi $(python --version)"
-        '';
-      };
-
-      devShells.Python311 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with pkgs; [
-          python311
-          python311Packages.pip
-          python311Packages.virtualenv
-          poetry
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan Python versi $(python --version)"
-        '';
-      };
-
-      devShells.PHP81 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with phps.packages.${sys}; [
-          env-php81
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan PHP versi $(php --version)"
-          echo "Anda menggunakan Composer versi $(composer --version)"
-        '';
-      };
-
-      devShells.PHP74 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with phps.packages.${sys}; [
-          env-php74
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan PHP versi $(php --version)"
-          echo "Anda menggunakan Composer versi $(composer --version)"
-        '';
-      };
-
-      devShells.PHP56 = pkgs.mkShell {
-        nativeBuildInputs = [ pkgs.bashInteractive ];
-        buildInputs = with phps.packages.${sys}; [
-          env-php56
-        ];
-        shellHook = with pkgs; ''
-          echo "Anda menggunakan PHP versi $(php --version)"
-          echo "Anda menggunakan Composer versi $(composer --version)"
         '';
       };
 
