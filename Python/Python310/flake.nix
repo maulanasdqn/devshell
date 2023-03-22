@@ -19,7 +19,7 @@
       overlays = [
         (self: super: {
           machNix = mach-nix.defaultPackage.${system};
-          python = super.python311;
+          python = super.python310;
         })
       ];
 
@@ -28,7 +28,7 @@
     {
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [ python machNix virtualenv ] ++
-          (with pkgs.python311Packages; [ pip ]);
+          (with pkgs.python310Packages; [ pip ]);
 
         shellHook = ''
           ${pkgs.python}/bin/python --version
