@@ -14,6 +14,18 @@
       system:
     let
       sys = system;
+      l = nixpkgs.lib // builtins;
+      supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
+      forAllSystems = f: l.genAttrs supportedSystems
+      (system: f system (
+        import nixpkgs {
+          inherit system;
+          config = {
+            android_sdk.accept_license = true;
+            allowUnfree = true;
+          };
+        }
+    ));
 
       replace = rec {
         replacer = a: b: str: nixpkgs.lib.strings.stringAsChars (x: if x == a then b else x) str;
@@ -24,7 +36,7 @@
       };
 
       nodejsVersion = 18;
-      javaVersion = 11;
+      javaVersion = 19;
       androidBuildToolsVersion = "33.0.0";
       androidPlatformsVersion = 33;
       androidNDKVersion = "23.1.7779620";
@@ -74,7 +86,11 @@
         })
       ];
 
-      pkgs = import nixpkgs { inherit overlays system; };
+      pkgs = import nixpkgs { 
+        inherit overlays system;
+        config.allowUnfree = true;
+        config.android_sdk.accept_license = true;
+      };
 
       run = pkg: "${pkgs.${pkg}}/bin/${pkg}";
 
@@ -189,10 +205,40 @@
           ruby
           androidSdk
           watchman
+          flutter
+          at-spi2-core.dev
+          clang
+          cmake
+          dbus.dev
+          gtk3
+          libdatrie
+          libepoxy.dev
+          util-linux.dev
+          libselinux
+          libsepol
+          libthai
+          libxkbcommon
+          ninja
+          pcre
+          pcre2.dev
+          pkg-config
+          xorg.libXdmcp
+          xorg.libXtst
+          android-studio
         ] ++ scripts;
         ANDROID_NDK_ROOT = "${pkgs.androidSdk.outPath}/share/android-sdk/ndk/${androidNDKVersion}";
+        FLUTTER_ROOT = pkgs.flutter;
+        LD_LIBRARY_PATH = "${pkgs.libepoxy}/lib";
+        CHROME_EXECUTABLE = "google-chrome-stable";
+        ANDROID_STUDIO = pkgs.android-studio;
+        ANDROID_JAVA_HOME = pkgs.jdk.home;
         shellHook = ''
           helpme
+          if ! [ -d $HOME/.cache/flutter/ ]
+          then
+          mkdir $HOME/.cache/flutter/
+          fi
+          ln -f -s ${pkgs.flutter}/bin/cache/dart-sdk $HOME/.cache/flutter/
         '';
       };
 
