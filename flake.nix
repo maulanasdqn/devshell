@@ -30,17 +30,17 @@
         };
         
         Java11 = {
-          path = ./Java/Java11;
+          path = ./Java/11;
           description = "Java development environment";
         };
         
         Java18 = {
-          path = ./Java/Java18;
+          path = ./Java/18;
           description = "Java development environment";
         };
         
         Java19 = {
-          path = ./Java/Java19;
+          path = ./Java/19;
           description = "Java development environment";
         };
 
@@ -55,28 +55,73 @@
         };
         
         NodeJS14 = {
-          path = ./NodeJS/NodeJS14;
+          path = ./NodeJS/14;
           description = "NodeJS development environment";
         };
         
         NodeJS16 = {
-          path = ./NodeJS/NodeJS16;
+          path = ./NodeJS/16;
           description = "NodeJS development environment";
         };
         
         NodeJS18 = {
-          path = ./NodeJS/NodeJS18;
+          path = ./NodeJS/18;
           description = "NodeJS development environment";
         };
 
         NodeJS19 = {
-          path = ./NodeJS/NodeJS19;
+          path = ./NodeJS/19;
           description = "NodeJS development environment";
         };
 
         Python = {
           path = ./Python;
           description = "Python development environment";
+        };
+        
+        Python310 = {
+          path = ./Python/3.10;
+          description = "Python development environment";
+        };
+        
+        Python39 = {
+          path = ./Python/3.9;
+          description = "Python development environment";
+        };
+        
+        Python38 = {
+          path = ./Python/3.8;
+          description = "Python development environment";
+        };
+
+        PHP = {
+          path = ./PHP;
+          description = "PHP development environment";
+        };
+        
+        PHP80 = {
+          path = ./PHP/8.0;
+          description = "PHP development environment";
+        };
+        
+        PHP81 = {
+          path = ./PHP/8.1;
+          description = "PHP development environment";
+        };
+        
+        PHP74 = {
+          path = ./PHP/7.4;
+          description = "PHP development environment";
+        };
+        
+        PHP56 = {
+          path = ./PHP/7.4;
+          description = "PHP development environment";
+        };
+        
+        Haskell = {
+          path = ./Haskell;
+          description = "Haskell development environment";
         };
 
         # rt = rust-toolchain;
@@ -103,7 +148,7 @@
             --experimental-features 'nix-command flakes' \
             flake init \
             --template \
-            "github:the-nix-way/dev-templates#''${TEMPLATE}"
+            "github:maulanasdqn/devshell#''${TEMPLATE}"
         '';
 
         update = writeScriptBin "update" ''
@@ -119,7 +164,7 @@
       {
         devShells = {
           default = mkShell {
-            packages = [ format update ];
+            packages = [ format update dvt ];
           };
         };
 

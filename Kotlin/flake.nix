@@ -35,7 +35,7 @@
         packages = with pkgs; [ kotlin gradle gcc ncurses patchelf zlib ];
 
         shellHook = ''
-         echo "Anda Menggunakan Kotlin Versi $(${pkgs.kotlin}/bin/kotlin -version)"
+          echo "Anda Menggunakan Kotlin Versi $(${pkgs.kotlin}/bin/kotlin -version)"
         '';
       };
     });
