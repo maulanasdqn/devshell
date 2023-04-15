@@ -28,17 +28,17 @@
           path = ./Java;
           description = "Java development environment";
         };
-        
+
         Java11 = {
           path = ./Java/11;
           description = "Java development environment";
         };
-        
+
         Java18 = {
           path = ./Java/18;
           description = "Java development environment";
         };
-        
+
         Java19 = {
           path = ./Java/19;
           description = "Java development environment";
@@ -53,17 +53,17 @@
           path = ./NodeJS;
           description = "NodeJS development environment";
         };
-        
+
         NodeJS14 = {
           path = ./NodeJS/14;
           description = "NodeJS development environment";
         };
-        
+
         NodeJS16 = {
           path = ./NodeJS/16;
           description = "NodeJS development environment";
         };
-        
+
         NodeJS18 = {
           path = ./NodeJS/18;
           description = "NodeJS development environment";
@@ -78,17 +78,17 @@
           path = ./Python;
           description = "Python development environment";
         };
-        
+
         Python310 = {
           path = ./Python/3.10;
           description = "Python development environment";
         };
-        
+
         Python39 = {
           path = ./Python/3.9;
           description = "Python development environment";
         };
-        
+
         Python38 = {
           path = ./Python/3.8;
           description = "Python development environment";
@@ -98,27 +98,27 @@
           path = ./PHP;
           description = "PHP development environment";
         };
-        
+
         PHP80 = {
           path = ./PHP/8.0;
           description = "PHP development environment";
         };
-        
+
         PHP81 = {
           path = ./PHP/8.1;
           description = "PHP development environment";
         };
-        
+
         PHP74 = {
           path = ./PHP/7.4;
           description = "PHP development environment";
         };
-        
+
         PHP56 = {
           path = ./PHP/7.4;
           description = "PHP development environment";
         };
-        
+
         Haskell = {
           path = ./Haskell;
           description = "Haskell development environment";
@@ -156,16 +156,15 @@
             (
               cd $dir
               ${exec "nix"} flake update # Update flake.lock
-              ${exec "direnv"} reload    # Make sure things work after the update
+              ${
+                exec "direnv"
+              } reload    # Make sure things work after the update
             )
           done
         '';
-      in
-      {
+      in {
         devShells = {
-          default = mkShell {
-            packages = [ format update dvt ];
-          };
+          default = mkShell { packages = [ format update dvt ]; };
         };
 
         packages = rec {
